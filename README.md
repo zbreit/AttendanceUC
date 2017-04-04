@@ -20,14 +20,12 @@ To set up your API key, you have to declare it as an environment variable. The e
 ```
 $ echo "export AIRTABLE_API_KEY=\"<insert your API KEY HERE>\"" >> ~/.bash_profile
 $ source ~/.bash_profile
-
 ```
 
 #### Linux
 ```
 $ echo "export AIRTABLE_API_KEY=\"<insert your API KEY HERE>\"" >> ~/.bash_rc
 $ source ~/.bash_rc
-
 ```
 
 #### Windows

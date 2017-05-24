@@ -1,0 +1,12 @@
+{
+    "roles": {
+        "Hacker": "10",
+        "Organizer": "20",
+        "Sponsor": "30",
+        "Mentor": "40",
+        "Volunteer": "50",
+        "Administrator": "60",
+        "Speaker": "70",
+        "Special": "80"
+    }
+}

@@ -10,21 +10,21 @@ Go to this [page](https://airtable.com/account) on AirTable to generate an API k
 ## Installing Dependencies
 Here are the packages you need to install to set up:
 ```
-$ pip3 install PyBarcode
+$ pip3 install PyBarcode Pillow
 ```
 
-## Setting Up the API Key for AttendanceUC
+## Setting Up your Environment
 To set up your API key, you have to declare it as an environment variable. The easiest way to do this is by running the following commands, which are OS dependent:
 
 #### Mac
 ```
-$ echo "export AIRTABLE_API_KEY=\"<insert your API KEY HERE>\"" >> ~/.bash_profile
+$ echo "export AIRTABLE_API_KEY=\"<insert your API KEY HERE>\"\nexport AIRTABLE_URL=\"<insert your airtable url>\"" >> ~/.bash_profile
 $ source ~/.bash_profile
 ```
 
 #### Linux
 ```
-$ echo "export AIRTABLE_API_KEY=\"<insert your API KEY HERE>\"" >> ~/.bash_rc
+$ echo "export AIRTABLE_API_KEY=\"<insert your API KEY HERE>\"\nexport AIRTABLE_URL=\"<insert your airtable url>\"" >> ~/.bash_rc
 $ source ~/.bash_rc
 ```
 

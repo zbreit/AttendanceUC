@@ -1,47 +1,73 @@
-//Typography
-body 
-    font-size: 16px
-    font-family: 'Titillium Web', Helvetica, sans-serif
-    font-weight: 300
+//Color Vars
+$red: #f44242
+$green: #a0f441
+$blue: #41f4d9
+$purple: #6d41f4
+
+html, body
+    height: 100%
+    margin: 0
+
+body
+    background:
+        image: url("../img/blue.png")
+        size: cover
+        repeat: no-repeat
+
     text-align: center
-    
-.intro
+    font-family: 'Roboto', Helvetica, sans-serif
+    font-size: 16px
+    font-weight: 300
+
+.title
+    margin: 0
+    font-size: 3em
+    font-family: 'Titillium Web', Helvetica, sans-serif
+    font-weight: 400
+
+.title b
+    font-weight: 700
+
+.hero
     position: absolute
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
-    
+
 img
-    width: 100px
+    width: 200px
     margin: 0
 
-
-b
-    font-weight: 700
-    
 input
-    font-family: 'Roboto', Helvetica, sans-serif
-    font-size: 16px
-    padding: 0.5em
+    padding: 1em 4em
     text-align: center
     border: 3px dashed black
-    
-input:focus
-    outline: 0
-    animation: rainbow 5s linear infinite
+    font-family: 'Roboto', Helvetica, sans-serif
+    font-size: 16px
+    background: transparent
+    &:focus
+        animation: rainbow 5s linear infinite
+        outline: 0
+    &::-webkit-input-placeholder,
+    &:-moz-placeholder,
+    &::-moz-placeholder,
+    &:-ms-input-placeholder
+        color: black
+
+
+#input-status
+    margin: 0 0 3em 0
+
 
 
 @keyframes rainbow
     0%
-        border: 3px dashed #f44242
+        border-color: $red
     25%
-        border: 3px dashed #a0f441
+        border-color: $green
     50%
-        border: 3px dashed #41f4d9
+        border-color: $blue
     75%
-        border: 3px dashed #6d41f4
+        border-color: $purple
     100%
-        border: 3px dashed #f44141
- 
-
-
+        border-color: $red

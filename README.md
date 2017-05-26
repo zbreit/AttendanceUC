@@ -1,16 +1,17 @@
 # AttendanceUC
 Welcome to AttendanceUC, a barcode attendance system for HackUC II using AirTable, PyBarcode, and Python3. Though we designed it specifically for our event, it is generally applicable to any event.
 
-# How to Use AttendanceUC
-Here are some general steps for setting up AttendanceUC for your event.
+# How to Use the Barcode Generator
+Here are some general steps for setting up the Barcode Generator for your event.
 
-## Setting up your AirTable
-Go to this [page](https://airtable.com/account) on AirTable to generate an API key.
+## Setting up your API Keys
+Go to this [page](https://airtable.com/account) on AirTable and this [page](https://dev.filestack.com/apps/) on Filestack to generate your API keys.
+
 
 ## Installing Dependencies
-Here are the packages you need to install to set up:
+Here are the python packages you need to install to set up:
 ```
-$ pip3 install PyBarcode Pillow
+$ pip3 install PyBarcode Pillow requests
 ```
 
 ## Setting Up your Environment
@@ -30,3 +31,10 @@ $ source ~/.bash_rc
 
 #### Windows
 Good luck with Windows
+
+## Running the program
+Once you've setup your config.json file in the barcodeGenerator directory to match your desired roles and prefixes, run the following command to generate barcodes for your participants.
+
+```
+$ python3 barcodeGenerator.py
+```

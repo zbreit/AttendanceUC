@@ -3,13 +3,20 @@ html, body {
   margin: 0; }
 
 body {
-  background-image: url("../img/blue.png");
-  background-size: cover;
-  background-repeat: no-repeat;
   text-align: center;
   font-family: "Roboto", Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 300; }
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  animation: imgRainbow 20s infinite; }
 
 .title {
   margin: 0;
@@ -36,26 +43,21 @@ input {
   border: 3px dashed black;
   font-family: "Roboto", Helvetica, sans-serif;
   font-size: 16px;
-  background: transparent; }
+  background: transparent;
+  transition: all 200ms ease-in-out; }
   input:focus {
-    animation: rainbow 5s linear infinite;
-    outline: 0; }
+    outline: 0;
+    border-color: #41f4d9; }
   input::-webkit-input-placeholder, input:-moz-placeholder, input::-moz-placeholder, input:-ms-input-placeholder {
     color: black; }
 
 #input-status {
   margin: 0 0 3em 0; }
 
-@keyframes rainbow {
+@keyframes imgRainbow {
   0% {
-    border-color: #f44242; }
-  25% {
-    border-color: #a0f441; }
-  50% {
-    border-color: #41f4d9; }
-  75% {
-    border-color: #6d41f4; }
+    filter: hue-rotate(0deg); }
   100% {
-    border-color: #f44242; } }
+    filter: hue-rotate(360deg); } }
 
 /*# sourceMappingURL=main.css.map */

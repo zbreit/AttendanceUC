@@ -9,15 +9,21 @@ html, body
     margin: 0
 
 body
-    background:
-        image: url("../img/blue.png")
-        size: cover
-        repeat: no-repeat
-
     text-align: center
     font-family: 'Roboto', Helvetica, sans-serif
     font-size: 16px
     font-weight: 300
+
+.background-image
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    height: 100%
+    width: 100%
+    animation: imgRainbow 20s infinite
+
 
 .title
     margin: 0
@@ -45,9 +51,11 @@ input
     font-family: 'Roboto', Helvetica, sans-serif
     font-size: 16px
     background: transparent
+    transition: all 200ms ease-in-out
     &:focus
-        animation: rainbow 5s linear infinite
+        //animation: rainbow 5s linear infinite
         outline: 0
+        border-color: $blue
     &::-webkit-input-placeholder,
     &:-moz-placeholder,
     &::-moz-placeholder,
@@ -58,9 +66,13 @@ input
 #input-status
     margin: 0 0 3em 0
 
+@keyframes imgRainbow
+    0%
+        filter: hue-rotate(0deg)
+    100%
+        filter: hue-rotate(360deg)
 
-
-@keyframes rainbow
+//@keyframes rainbow
     0%
         border-color: $red
     25%

@@ -6,7 +6,7 @@ listOfParticipants = airtableWrapper.getParticipants()
 barcodeDir = "./barcodes/"
 
 # Setting up the PyBarcode module
-barcodeOptions = {'font_size': 10, 'text': 'Testing'}
+barcodeOptions = {'font_size': 10, 'text': 'Testing', 'module_width': 0.75, 'module_height': 10}
 
 
 # Iterate through each participant and generate a barcode
@@ -14,4 +14,4 @@ for participant in listOfParticipants:
     barcode = barcodeWrapper.createBarcode(participant)
     participantName = airtableWrapper.getFullName(participant)
     barcodeImg = barcode.save(barcodeDir + participantName, barcodeOptions)
-    airtableWrapper.addParticipantBarcode(participant, barcode, barcodeImg)
+    airtableWrapper.addParticipantBarcode(participant, barcode)

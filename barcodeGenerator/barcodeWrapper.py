@@ -1,4 +1,5 @@
 import barcode  # For generating barcodes given a string of numbers
+from barcode.writer import ImageWriter  # For saving files as pngss
 import random   # For generating random sequences for barcodes
 import json     # For reading the config file
 
@@ -11,18 +12,18 @@ barcodeIterator = 10000
 
 
 def createBarcode(participant):
-    """Given a dictionary participant info, generate a barcode using PyBarcode """
+    """Given a dictionary of participant info, generate a barcode using PyBarcode"""
     barcodeNum = getBarcodeNumber(participant)
-    return barcode.get('ean8', barcodeNum)
+    return barcode.get('ean8', barcodeNum, writer=ImageWriter())
 
 
 def getBarcodeNumber(participant):
-    """Returns a unicode string that uses the particapant's information to generate a random string."""
+    """Returns a unicode string that is based on the particapant's submitted information"""
     roleID = getBarcodePrefix(participant['fields']['Role'])
     global barcodeIterator
     randNum = str(barcodeIterator)
     barcodeIterator += 1
-    # Perform add the roleID str and the randNum str
+    # Concatenate the roleID str and the randNum str
     return roleID + randNum
 
 

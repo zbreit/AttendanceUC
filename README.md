@@ -18,13 +18,13 @@ To set up your API key, you have to declare it as an environment variable. The e
 
 #### Mac
 ```
-$ echo "export AIRTABLE_API_KEY=\"<insert your API KEY HERE>\"\nexport AIRTABLE_URL=\"<insert your airtable url>\"" >> ~/.bash_profile
+$ echo "export AIRTABLE_API_KEY=\"<insert your AIRTABLE API KEY here>\"\nexport AIRTABLE_URL=\"<insert your airtable url>\"\nexport FILESTACK_API_KEY=\"<insert your FILESTACK API KEY here>\"" >> ~/.bash_profile
 $ source ~/.bash_profile
 ```
 
 #### Linux
 ```
-$ echo "export AIRTABLE_API_KEY=\"<insert your API KEY HERE>\"\nexport AIRTABLE_URL=\"<insert your airtable url>\"" >> ~/.bash_rc
+$ echo "export AIRTABLE_API_KEY=\"<insert your AIRTABLE API KEY here>\"\nexport AIRTABLE_URL=\"<insert your airtable url>\"\nexport FILESTACK_API_KEY=\"<insert your FILESTACK API KEY here>\"" >> ~/.bash_rc
 $ source ~/.bash_rc
 ```
 

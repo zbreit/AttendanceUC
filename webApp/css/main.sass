@@ -3,6 +3,7 @@ $red: #f44242
 $green: #a0f441
 $blue: #41f4d9
 $purple: #6d41f4
+$standardTransition: all 200ms ease-in-out
 
 html, body
     height: 100%
@@ -22,8 +23,7 @@ body
     bottom: 0
     height: 100%
     width: 100%
-    animation: imgRainbow 20s infinite
-
+    animation: imgRainbow 20s infinite linear
 
 .title
     margin: 0
@@ -47,21 +47,16 @@ img
 input
     padding: 1em 4em
     text-align: center
-    border: 3px dashed black
+    border: 3px solid black
     font-family: 'Roboto', Helvetica, sans-serif
     font-size: 16px
     background: transparent
-    transition: all 200ms ease-in-out
+    transition: $standardTransition
+    //box-shadow: 2px 2px 0px black
     &:focus
         //animation: rainbow 5s linear infinite
         outline: 0
-        border-color: $blue
-    &::-webkit-input-placeholder,
-    &:-moz-placeholder,
-    &::-moz-placeholder,
-    &:-ms-input-placeholder
-        color: black
-
+        box-shadow: 4px 4px 0px black
 
 #input-status
     margin: 0 0 3em 0

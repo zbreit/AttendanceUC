@@ -10,14 +10,21 @@
 </head>
 <body>
     <img src="img/blue.png" class="background-image">
+    <div class="dropdown-container">
+        <select class="event-dropdown">
+            <option value="Event 1">Event 1</option>
+            <option value="Event 2">Event 2</option>
+            <option value="Event 3">Event 3</option>
+        </select>
+    </div>
     <section class="hero">
         <img src="img/logo.png" alt="HackUC Logo" class="logo">
         <h1 class="title">Attendance<b>UC</b></h1>
+
         <p id="input-status">Enter your barcode below to sign in</p>
         <input id="barcode-input" type="text" >
     </section>
-    <script type="text/javascript" src="js/main.js">
-
-    </script>
+    <script type="text/javascript" src="js/getapikey.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

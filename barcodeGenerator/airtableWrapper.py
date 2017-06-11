@@ -54,7 +54,7 @@ def filestackUpload(fileName):
     return filestackReq.json()
 
 
-def addParticipantBarcode(participant, participantNumber, numOfParticipants, barcode):
+def addParticipantBarcode(participant, barcode):
     """Update participant in airtable with their barcode and their barcode image"""
     patchURL = airtableURL + "/" + participant['id']
     fileName = getFullName(participant) + '.png'

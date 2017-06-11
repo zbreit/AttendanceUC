@@ -1,9 +1,7 @@
-//(function() { //Create a module to make all variables anonymous
+(function() { //Create a module to make all variables anonymous
     var barcodeInput = document.getElementById('barcode-input');
     var eventDropdown = document.getElementById('event-dropdown');
     var notificationBar = document.getElementById('notification');
-    var prevVal = barcodeInput.value;
-    var currentVal = prevVal;
     var baseURL = "https://api.airtable.com/v0/appAmvoUMZeuE3Avq/"
     var apiKeyParam = "?api_key="
     var eventURL = baseURL + 'Events' + apiKeyParam;
@@ -73,30 +71,22 @@
         barcodeInput.focus();
     }
 
-    function hasInputChanged() {
-        if (currentVal !== prevVal) {
-            prevVal = currentVal;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     function isValidBarcode(barcodeInput) {
         var barcodeRegEx = /\b\d{8}\b/ //Exactly 8 integers
         var passesRegex = barcodeRegEx.test(barcodeInput);
         var barcodeInList = barcodeList.includes(barcodeInput); //If the barcode can be found in the list of barcodes
+        if(passesRegex && !barcodeInList) {
+            resetInput();
+            displayNotification("Invalid barcode");
+        }
         return (passesRegex && barcodeInList);
     }
 
     function sendBarcodeIfValid() {
         currentVal = barcodeInput.value;
-        if (hasInputChanged()) {
-            console.log('Input Value Change');
-            if (isValidBarcode(currentVal)) {
+        if (isValidBarcode(currentVal)) {
                 console.log('Valid Barcode')
                 attendEvent(currentVal);
-            }
         }
     }
 
@@ -155,7 +145,7 @@
     function getSuccessMessage(index) {
         var currentEventName = eventDropdown.options[eventDropdown.selectedIndex].textContent;
         var participantName = participantNames[index];
-        return participantName + " successfully signed into " + currentEventName + "!"
+        return participantName + " successfully signed into " + currentEventName;
     }
 
     function displayNotification(message) {
@@ -206,4 +196,4 @@
     });
 
     var checker = setInterval(sendBarcodeIfValid, 500);
-// }());
+}());

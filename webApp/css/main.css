@@ -43,16 +43,15 @@ body {
 .dropdown-container {
   border: 3px solid black;
   width: min-content;
-  margin: 0.5em auto;
   position: absolute;
   top: 2em;
   left: 2em; }
 
-.event-dropdown {
+#event-dropdown {
   border: 0;
   background-color: transparent;
   height: 2em; }
-  .event-dropdown:focus {
+  #event-dropdown:focus {
     outline: none; }
 
 img {

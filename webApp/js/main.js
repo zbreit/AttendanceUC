@@ -194,6 +194,8 @@
             event.appendChild(eventText);
             eventDropdown.appendChild(event);
         });
+        var hackUCId = 'reca3ek48KVQtSjsS';
+        eventDropdown.value = hackUCId;
     }
 
 

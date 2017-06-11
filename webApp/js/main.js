@@ -111,6 +111,7 @@
         else {
           var errorMessage = "Participant already attended this event";
           displayNotification(errorMessage);
+          resetInput();
           return;
         }
          //TODO: Check if the event is already added

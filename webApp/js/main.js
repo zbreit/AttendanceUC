@@ -102,22 +102,22 @@
         var particpantIndex = getParticipantIndex(barcodeVal);
         var participantId = getParticipantId(particpantIndex);
         var attendReq = new XMLHttpRequest();
-        participantEvents[particpantIndex].push(eventID);
+        participantEvents[particpantIndex].push(eventID); //TODO: Check if the event is already added
         var paramObj = {
             "fields" : {
                 "Events": participantEvents[particpantIndex]
             }
         };
-        var eventParam = '&json=' +  JSON.stringify(paramObj);
-        var attendReqEndpoint = attendEventURL + participantId + apiKeyParam + airtableKey + eventParam;
+        var attendReqEndpoint = attendEventURL + participantId + apiKeyParam + airtableKey;
         attendReq.open('PATCH', attendReqEndpoint, true);
+        attendReq.setRequestHeader("Content-Type", "application/json");
         attendReq.onreadystatechange = function() {
             if (attendReq.readyState === 4 && attendReq.status === 200) {
                 console.log("Attended Event!");
 
             }
         };
-        attendReq.send();
+        attendReq.send(JSON.stringify(paramObj));
     }
 
     function getCurrentEventID() {

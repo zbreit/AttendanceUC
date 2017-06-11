@@ -1,6 +1,7 @@
 //(function() { //Create a module to make all variables anonymous
     var barcodeInput = document.getElementById('barcode-input');
     var eventDropdown = document.getElementById('event-dropdown');
+    var notificationBar = document.getElementById('notification');
     var prevVal = barcodeInput.value;
     var currentVal = prevVal;
     var baseURL = "https://api.airtable.com/v0/appAmvoUMZeuE3Avq/"
@@ -12,7 +13,8 @@
     var eventDict;
     var eventList = [];
     var barcodeList = [];
-    var participantList = [];
+    var participantIds = [];
+    var participantNames = [];
     var participantEvents = [];
     var gatheredApiKey = new Event('apiKeyRetrieved');
     var gatheredEventList = new Event('eventListRetrieved');
@@ -32,15 +34,17 @@
             if (barcodeReq.readyState === 4 && barcodeReq.status === 200) {
                 listOfAttendees = JSON.parse(barcodeReq.responseText);
                 listOfAttendees['records'].forEach(function(participant, index, array) {
-                    participantId = participant['id'];
-                    barcodeNum = participant['fields']['Barcode']['text'];
-                    listOfEvents = participant['fields']['Events'];
+                    var participantId = participant['id'];
+                    var participantName = participant['fields']['First Name'] + " " + participant['fields']['Last Name'];
+                    var barcodeNum = participant['fields']['Barcode']['text'];
+                    var listOfEvents = participant['fields']['Events'];
                     if(listOfEvents === undefined) {
                         listOfEvents = [];
                     }
                     //Ensures that the name and barcode have the same index in their respective arrays
                     barcodeList.push(barcodeNum);
-                    participantList.push(participantId);
+                    participantIds.push(participantId);
+                    participantNames.push(participantName);
                     participantEvents.push(listOfEvents);
                 });
             }
@@ -51,7 +55,6 @@
     function getApiKey() {
         var xhr = new XMLHttpRequest();
         var file_data = {};
-        var api_key = '';
 
         xhr.open('GET', 'http://212.237.22.247/config.json', true);
         xhr.onreadystatechange = function() {
@@ -98,26 +101,42 @@
     }
 
     function attendEvent(barcodeVal) {
-        var eventID = getCurrentEventID();
-        var particpantIndex = getParticipantIndex(barcodeVal);
-        var participantId = getParticipantId(particpantIndex);
+        var eventId = getCurrentEventID();
+        var participantIndex = getParticipantIndex(barcodeVal);
+        var participantId = getParticipantId(participantIndex);
         var attendReq = new XMLHttpRequest();
-        participantEvents[particpantIndex].push(eventID); //TODO: Check if the event is already added
+        if(!participantEvents[participantIndex].includes(eventId)) {
+            participantEvents[participantIndex].push(eventId);
+        }
+        else {
+          var errorMessage = "Participant already attended this event";
+          displayNotification(errorMessage);
+          return;
+        }
+         //TODO: Check if the event is already added
         var paramObj = {
             "fields" : {
-                "Events": participantEvents[particpantIndex]
+                "Events": participantEvents[participantIndex]
             }
         };
-        var attendReqEndpoint = attendEventURL + participantId + apiKeyParam + airtableKey;
+        var attendReqEndpoint = attendEventURL + participantId;
         attendReq.open('PATCH', attendReqEndpoint, true);
         attendReq.setRequestHeader("Content-Type", "application/json");
+        attendReq.setRequestHeader("Authorization", "Bearer " + airtableKey)
         attendReq.onreadystatechange = function() {
             if (attendReq.readyState === 4 && attendReq.status === 200) {
                 console.log("Attended Event!");
-
+                var message = getSuccessMessage(participantIndex);
+                displayNotification(message);
+                resetInput();
             }
         };
         attendReq.send(JSON.stringify(paramObj));
+    }
+
+    function resetInput() {
+        console.log("Resetting input");
+        barcodeInput.value = null;
     }
 
     function getCurrentEventID() {
@@ -129,8 +148,23 @@
     }
 
     function getParticipantId(index) {
+        return participantIds[index];
+    }
 
-        return participantList[index];
+    function getSuccessMessage(index) {
+        var currentEventName = eventDropdown.options[eventDropdown.selectedIndex].textContent;
+        var participantName = participantNames[index];
+        return participantName + " successfully signed into " + currentEventName + "!"
+    }
+
+    function displayNotification(message) {
+        notificationBar.innerHTML = null; //Clear the current message
+        notificationBar.innerHTML = message;
+        console.log(message);
+        notificationBar.classList.add("active");
+        window.setTimeout(function() {
+            notificationBar.classList.remove("active");
+        }, 5000);
     }
 
     function getEventList() {

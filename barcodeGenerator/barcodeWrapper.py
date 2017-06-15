@@ -10,11 +10,14 @@ userConfigs = json.load(configFile)
 # Barcode iterator keeps track of the current barcode ID
 barcodeIterator = 10000
 
+# A list of all used barcodes to prevent repeats
+barcodeList = []
+
 
 def createBarcode(participant):
     """Given a dictionary of participant info, generate a barcode using PyBarcode"""
     barcodeNum = getBarcodeNumber(participant)
-    return barcode.get('ean8', barcodeNum, writer=ImageWriter())
+    return barcode.get('code128', barcodeNum, writer=ImageWriter())
 
 
 def getBarcodeNumber(participant):
@@ -24,7 +27,11 @@ def getBarcodeNumber(participant):
     randNum = str(barcodeIterator)
     barcodeIterator += 1
     # Concatenate the roleID str and the randNum str
-    return roleID + randNum
+    barcode = roleID + randNum
+    # If the barcode is already in use, generate a new one with the random number += 1
+    if barcode in barcodeList:
+        barcode = getBarcodeNumber(participant)
+    return barcode
 
 
 def getBarcodePrefix(role):

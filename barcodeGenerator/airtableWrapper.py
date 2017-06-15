@@ -2,8 +2,8 @@ import os        # For accessing the API key environment variable
 import requests  # For interfacing with the registration info on AirTable
 
 # AirTable request variables
-airtableKey = os.environ['AIRTABLE_API_KEY']
-airtableURL = os.environ['AIRTABLE_URL']
+airtableKey = 'keyMBUvruNJcIPtjx'
+airtableURL = 'https://api.airtable.com/v0/appAmvoUMZeuE3Avq/List%20of%20Atendees'
 airtableParams = {
     'View': "Main View",
     'api_key': airtableKey
@@ -11,7 +11,7 @@ airtableParams = {
 
 # Filestack request variables
 filestackURL = 'https://www.filestackapi.com/api/store/S3'
-filestackKey = os.environ['FILESTACK_API_KEY']
+filestackKey = 'AfIoeNsWvRLWTI33vycMQz'
 filestackParams = {
     'key': filestackKey
 }
@@ -54,7 +54,7 @@ def filestackUpload(fileName):
     return filestackReq.json()
 
 
-def addParticipantBarcode(participant, participantNumber, numOfParticipants, barcode):
+def addParticipantBarcode(participant, barcode):
     """Update participant in airtable with their barcode and their barcode image"""
     patchURL = airtableURL + "/" + participant['id']
     fileName = getFullName(participant) + '.png'

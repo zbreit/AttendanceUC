@@ -13,7 +13,7 @@ barcodeOptions = {'font_size': 10, 'text': 'Testing', 'module_width': 0.75, 'mod
 for participant in listOfParticipants:
     try:
         # If the participant already has a generated barcode, don't create a new one
-        barcodeWrapper.barcodeList.append(participant['fields']['Barcode'])
+        barcodeWrapper.barcodeList.append(participant['fields']['Barcode']['text'])
         print("Participant already has the generated barcode")
 
     except KeyError:

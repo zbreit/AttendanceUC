@@ -17,6 +17,7 @@ barcodeList = []
 def createBarcode(participant):
     """Given a dictionary of participant info, generate a barcode using PyBarcode"""
     barcodeNum = getBarcodeNumber(participant)
+    barcodeList.append(barcodeNum)
     return barcode.get('code128', barcodeNum, writer=ImageWriter())
 
 
@@ -30,6 +31,7 @@ def getBarcodeNumber(participant):
     barcode = roleID + randNum
     # If the barcode is already in use, generate a new one with the random number += 1
     if barcode in barcodeList:
+        print("Barcode already in use. Creating a unique barcode...")
         barcode = getBarcodeNumber(participant)
     return barcode
 

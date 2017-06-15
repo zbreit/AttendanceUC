@@ -72,7 +72,7 @@
     }
 
     function isValidBarcode(barcodeInput) {
-        var barcodeRegEx = /\b\d{8}\b/ //Exactly 8 integers
+        var barcodeRegEx = /\b\d{7}\b/ //Exactly 7 integers
         var passesRegex = barcodeRegEx.test(barcodeInput);
         var barcodeInList = barcodeList.includes(barcodeInput); //If the barcode can be found in the list of barcodes
         if(passesRegex && !barcodeInList) {

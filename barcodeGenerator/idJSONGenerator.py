@@ -8,9 +8,12 @@ for participant in participantList:
     newParticipant = {
         'id': participant['fields']['Barcode']['text'],
         'name': participant['fields']['First Name'] + " " + participant['fields']['Last Name'],
-        'role': participant['fields']['Role']
+        'role': participant['fields']['Role'].lower()
     }
     participantJSONArray.append(newParticipant)
 
 participantJSONStr = json.dumps(participantJSONArray)
-print(participantJSONStr)
+
+myFile = open('participants.json', 'w')
+
+myFile.write(participantJSONStr)

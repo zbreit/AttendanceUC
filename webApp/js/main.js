@@ -1,14 +1,17 @@
 (function() { //Create a module to make all variables anonymous
+    // Grab the pertinent elements from the DOM
     var barcodeInput = document.getElementById('barcode-input');
     var eventDropdown = document.getElementById('event-dropdown');
     var notificationBar = document.getElementById('notification');
-    var baseURL = "https://api.airtable.com/v0/appAmvoUMZeuE3Avq/"
-    var apiKeyParam = "?api_key="
+    // The Airtable Basic information
+    var baseURL = "https://api.airtable.com/v0/appAmvoUMZeuE3Avq/";
     var eventURL = baseURL + 'Events' + apiKeyParam;
     var attendanceURL = baseURL + "List%20of%20Atendees" + apiKeyParam;
-    var attendEventURL = baseURL + "List%20of%20Atendees/"
+    var attendEventURL = baseURL + "List%20of%20Atendees/";
+    var hackUCEventId = 'reca3ek48KVQtSjsS';
+    // The airtable API Key
     var airtableKey;
-    var eventDict;
+    var eventJSON;
     var eventList = [];
     var barcodeList = [];
     var participantIds = [];
@@ -39,7 +42,7 @@
                     if(listOfEvents === undefined) {
                         listOfEvents = [];
                     }
-                    //Ensures that the name and barcode have the same index in their respective arrays
+                    // Ensures that the name and barcode have the same index in their respective arrays
                     barcodeList.push(barcodeNum);
                     participantIds.push(participantId);
                     participantNames.push(participantName);
@@ -52,7 +55,6 @@
 
     function getApiKey() {
         var xhr = new XMLHttpRequest();
-        var file_data = {};
 
         xhr.open('GET', 'http://212.237.22.247/config.json', true);
         xhr.onreadystatechange = function() {
@@ -63,8 +65,6 @@
             }
         };
         xhr.send();
-        //airtableKey = 'keyMBUvruNJcIPtjx';
-        //document.dispatchEvent(gatheredApiKey);
     }
 
     function focusBarcodeInput() {
@@ -95,6 +95,7 @@
         var participantIndex = getParticipantIndex(barcodeVal);
         var participantId = getParticipantId(participantIndex);
         var attendReq = new XMLHttpRequest();
+        // If the participant hasn't already attended this event
         if(!participantEvents[participantIndex].includes(eventId)) {
             participantEvents[participantIndex].push(eventId);
         }
@@ -104,12 +105,21 @@
           resetInput();
           return;
         }
-         //TODO: Check if the event is already added
-        var paramObj = {
-            "fields" : {
-                "Events": participantEvents[participantIndex]
-            }
-        };
+        if(eventId === hackUCEventId) {
+            var paramObj = {
+                "fields" : {
+                    "Events": participantEvents[participantIndex],
+                    "In Attendance": true
+                }
+            };
+        }
+        else {
+            var paramObj = {
+                "fields" : {
+                    "Events": participantEvents[participantIndex]
+                }
+            };
+        }
         var attendReqEndpoint = attendEventURL + participantId;
         attendReq.open('PATCH', attendReqEndpoint, true);
         attendReq.setRequestHeader("Content-Type", "application/json");
@@ -165,7 +175,7 @@
         airtableGetRequest.onreadystatechange = function() {
             if (airtableGetRequest.readyState === 4 && airtableGetRequest.status === 200) {
                 console.log("Retrieved Event List");
-                eventDict = JSON.parse(airtableGetRequest.responseText);
+                eventJSON = JSON.parse(airtableGetRequest.responseText);
                 document.dispatchEvent(gatheredEventList);
             }
         }
@@ -174,7 +184,7 @@
 
     function updateEventList() {
         var eventDropdown = document.getElementById('event-dropdown');
-        eventDict["records"].forEach(function(currentVal, index, array) {
+        eventJSON["records"].forEach(function(currentVal, index, array) {
             var event = document.createElement("option");
             var eventName = currentVal['fields']['Name'];
             var eventId = currentVal['id'];
@@ -185,8 +195,7 @@
             event.appendChild(eventText);
             eventDropdown.appendChild(event);
         });
-        var hackUCId = 'reca3ek48KVQtSjsS';
-        eventDropdown.value = hackUCId;
+        eventDropdown.value = hackUCEventId;
     }
 
 

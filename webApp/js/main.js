@@ -1,4 +1,4 @@
-(function() { //Create a module to make all variables anonymous
+//(function() { //Create a module to make all variables anonymous
     // Grab the pertinent elements from the DOM
     var barcodeInput = document.getElementById('barcode-input');
     var eventDropdown = document.getElementById('event-dropdown');
@@ -6,17 +6,19 @@
     var hackpointsPopup = document.getElementById('hackpoints-notification');
     var pointValText = document.getElementById('point-value');
     // The Airtable Basic information
-    var baseURL = 'https://api.airtable.com/v0/appAmvoUMZeuE3Avq/';
+    var baseURL = 'https://api.airtable.com/v0/appzBX90ZCoEcaxry/';
     var apiKeyParam = '?api_key='
     var eventURL = baseURL + 'Events' + apiKeyParam;
     var attendanceURL = baseURL + 'List%20of%20Atendees' + apiKeyParam;
     var attendEventURL = baseURL + 'List%20of%20Atendees/';
-    var hackUCEventId = 'reca3ek48KVQtSjsS';
+    var hackUCEventId = 'recqLzFdQq6MTdsTk';
     // The airtable API Key
     var airtableKey;
     var eventJSON;
+    var barcodeListOffset = "";
     var eventList = [];
     var barcodeList = [];
+    var listOfAttendees = [];
     var participantIds = [];
     var participantNames = [];
     var participantEvents = [];
@@ -31,26 +33,38 @@
     document.addEventListener('eventListRetrieved', updateEventList, false);
 
     function getBarcodeList() {
-        barcodeReq = new XMLHttpRequest();
-        barcodeEndpoint = attendanceURL + airtableKey
+        var barcodeReq = new XMLHttpRequest();
+        barcodeEndpoint = attendanceURL + airtableKey + barcodeListOffset;
         barcodeReq.open('GET', barcodeEndpoint, true);
         barcodeReq.onreadystatechange = function() {
             if (barcodeReq.readyState === 4 && barcodeReq.status === 200) {
-                listOfAttendees = JSON.parse(barcodeReq.responseText);
-                listOfAttendees['records'].forEach(function(participant, index, array) {
-                    var participantId = participant['id'];
-                    var participantName = participant['fields']['First Name'] + ' ' + participant['fields']['Last Name'];
-                    var barcodeNum = participant['fields']['Barcode']['text'];
-                    var listOfEvents = participant['fields']['Events'];
-                    if(listOfEvents === undefined) {
-                        listOfEvents = [];
-                    }
-                    // Ensures that the name and barcode have the same index in their respective arrays
-                    barcodeList.push(barcodeNum);
-                    participantIds.push(participantId);
-                    participantNames.push(participantName);
-                    participantEvents.push(listOfEvents);
+                var responseJSON = JSON.parse(barcodeReq.responseText);
+                responseJSON['records'].forEach(function(participant, index, array) {
+                    listOfAttendees.push(participant);
                 });
+                if('offset' in responseJSON) {
+                    barcodeListOffset = "&offset=" + responseJSON['offset'];
+                    console.log("Exceeded 100 record limit. Issuing another request...");
+                    getBarcodeList();
+                    return;
+                }
+                else {
+                    console.log("Successfully retrieved", listOfAttendees.length, "records.");
+                    listOfAttendees.forEach(function(participant, index, array) {
+                        var participantId = participant['id'];
+                        var participantName = participant['fields']['First Name'] + ' ' + participant['fields']['Last Name'];
+                        var barcodeNum = participant['fields']['Barcode']['text'];
+                        var listOfEvents = participant['fields']['Events'];
+                        if(listOfEvents === undefined) {
+                            listOfEvents = [];
+                        }
+                        // Ensures that the name and barcode have the same index in their respective arrays
+                        barcodeList.push(barcodeNum);
+                        participantIds.push(participantId);
+                        participantNames.push(participantName);
+                        participantEvents.push(listOfEvents);
+                    });
+                }
             }
         }
         barcodeReq.send();
@@ -239,4 +253,4 @@
     });
 
     var checker = setInterval(sendBarcodeIfValid, 500);
-}());
+//}());

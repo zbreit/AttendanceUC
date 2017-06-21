@@ -3,11 +3,14 @@
     var barcodeInput = document.getElementById('barcode-input');
     var eventDropdown = document.getElementById('event-dropdown');
     var notificationBar = document.getElementById('notification');
+    var hackpointsPopup = document.getElementById('hackpoints-notification');
+    var pointValText = document.getElementById('point-value');
     // The Airtable Basic information
-    var baseURL = "https://api.airtable.com/v0/appAmvoUMZeuE3Avq/";
+    var baseURL = 'https://api.airtable.com/v0/appAmvoUMZeuE3Avq/';
+    var apiKeyParam = '?api_key='
     var eventURL = baseURL + 'Events' + apiKeyParam;
-    var attendanceURL = baseURL + "List%20of%20Atendees" + apiKeyParam;
-    var attendEventURL = baseURL + "List%20of%20Atendees/";
+    var attendanceURL = baseURL + 'List%20of%20Atendees' + apiKeyParam;
+    var attendEventURL = baseURL + 'List%20of%20Atendees/';
     var hackUCEventId = 'reca3ek48KVQtSjsS';
     // The airtable API Key
     var airtableKey;
@@ -36,7 +39,7 @@
                 listOfAttendees = JSON.parse(barcodeReq.responseText);
                 listOfAttendees['records'].forEach(function(participant, index, array) {
                     var participantId = participant['id'];
-                    var participantName = participant['fields']['First Name'] + " " + participant['fields']['Last Name'];
+                    var participantName = participant['fields']['First Name'] + ' ' + participant['fields']['Last Name'];
                     var barcodeNum = participant['fields']['Barcode']['text'];
                     var listOfEvents = participant['fields']['Events'];
                     if(listOfEvents === undefined) {
@@ -77,7 +80,7 @@
         var barcodeInList = barcodeList.includes(barcodeInput); //If the barcode can be found in the list of barcodes
         if(passesRegex && !barcodeInList) {
             resetInput();
-            displayNotification("Invalid barcode");
+            displayNotification('Invalid barcode');
         }
         return (passesRegex && barcodeInList);
     }
@@ -100,35 +103,36 @@
             participantEvents[participantIndex].push(eventId);
         }
         else {
-          var errorMessage = "Participant already attended this event";
+          var errorMessage = 'Participant already attended this event';
           displayNotification(errorMessage);
           resetInput();
           return;
         }
         if(eventId === hackUCEventId) {
             var paramObj = {
-                "fields" : {
-                    "Events": participantEvents[participantIndex],
-                    "In Attendance": true
+                'fields' : {
+                    'Events': participantEvents[participantIndex],
+                    'In Attendance': true
                 }
             };
         }
         else {
             var paramObj = {
-                "fields" : {
-                    "Events": participantEvents[participantIndex]
+                'fields' : {
+                    'Events': participantEvents[participantIndex]
                 }
             };
         }
         var attendReqEndpoint = attendEventURL + participantId;
         attendReq.open('PATCH', attendReqEndpoint, true);
-        attendReq.setRequestHeader("Content-Type", "application/json");
-        attendReq.setRequestHeader("Authorization", "Bearer " + airtableKey)
+        attendReq.setRequestHeader('Content-Type', 'application/json');
+        attendReq.setRequestHeader('Authorization', 'Bearer ' + airtableKey)
         attendReq.onreadystatechange = function() {
             if (attendReq.readyState === 4 && attendReq.status === 200) {
-                console.log("Attended Event!");
+                console.log('Attended Event!');
                 var message = getSuccessMessage(participantIndex);
                 displayNotification(message);
+                displayPointValue(eventId);
                 resetInput();
             }
         };
@@ -136,7 +140,7 @@
     }
 
     function resetInput() {
-        console.log("Resetting input");
+        console.log('Resetting input');
         barcodeInput.value = null;
     }
 
@@ -155,17 +159,47 @@
     function getSuccessMessage(index) {
         var currentEventName = eventDropdown.options[eventDropdown.selectedIndex].textContent;
         var participantName = participantNames[index];
-        return participantName + " successfully signed into " + currentEventName;
+        return participantName + ' successfully signed into ' + currentEventName;
     }
 
     function displayNotification(message) {
         notificationBar.innerHTML = null; //Clear the current message
-        notificationBar.innerHTML = message;
+        var notificationText = document.createTextNode(message);
+        notificationBar.appendChild(notificationText);
         console.log(message);
-        notificationBar.classList.add("active");
+        notificationBar.classList.add('active');
         window.setTimeout(function() {
-            notificationBar.classList.remove("active");
-        }, 5000);
+            notificationBar.classList.remove('active');
+        }, 3500);
+    }
+
+    function displayPointValue(eventId) {
+        var pointValue = getPointValue(eventId);
+        if(pointValue === 0) {
+            return; // If the event isn't worth anything, don't display any point values
+        }
+        var pointNotification = '+' + pointValue.toString();
+        pointValText.innerHTML = null;
+        var pointValTextNode = document.createTextNode(pointNotification);
+        pointValText.appendChild(pointValTextNode);
+        hackpointsPopup.classList.add('active');
+        window.setTimeout(function() {
+            hackpointsPopup.classList.remove('active');
+        }, 3500);
+    }
+
+    function getPointValue(eventId) {
+        var pointValue = null;
+        eventJSON['records'].forEach(function(currentVal, index, array) {
+            if(currentVal['id'] === eventId) {
+                pointValue = currentVal['fields']['Points'];
+            }
+        });
+        if(pointValue === null) {
+            console.log("ERROR: Invalid Event ID");
+            return 0;
+        }
+        return pointValue;
     }
 
     function getEventList() {
@@ -174,7 +208,7 @@
         airtableGetRequest.open('GET', airtableEndPoint, true);
         airtableGetRequest.onreadystatechange = function() {
             if (airtableGetRequest.readyState === 4 && airtableGetRequest.status === 200) {
-                console.log("Retrieved Event List");
+                console.log('Retrieved Event List');
                 eventJSON = JSON.parse(airtableGetRequest.responseText);
                 document.dispatchEvent(gatheredEventList);
             }
@@ -184,8 +218,8 @@
 
     function updateEventList() {
         var eventDropdown = document.getElementById('event-dropdown');
-        eventJSON["records"].forEach(function(currentVal, index, array) {
-            var event = document.createElement("option");
+        eventJSON['records'].forEach(function(currentVal, index, array) {
+            var event = document.createElement('option');
             var eventName = currentVal['fields']['Name'];
             var eventId = currentVal['id'];
             var eventText = document.createTextNode(eventName);

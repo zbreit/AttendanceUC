@@ -1,4 +1,4 @@
-(function() { //Create a module to make all variables anonymous
+//(function() { //Create a module to make all variables anonymous
     // Grab the pertinent elements from the DOM
     var barcodeInput = document.getElementById('barcode-input');
     var eventDropdown = document.getElementById('event-dropdown');
@@ -39,6 +39,7 @@
         barcodeReq.onreadystatechange = function() {
             if (barcodeReq.readyState === 4 && barcodeReq.status === 200) {
                 var responseJSON = JSON.parse(barcodeReq.responseText);
+                console.log(responseJSON);
                 responseJSON['records'].forEach(function(participant, index, array) {
                     listOfAttendees.push(participant);
                 });
@@ -51,12 +52,20 @@
                 else {
                     console.log("Successfully retrieved", listOfAttendees.length, "records.");
                     listOfAttendees.forEach(function(participant, index, array) {
-                        var participantId = participant['id'];
-                        var participantName = participant['fields']['First Name'] + ' ' + participant['fields']['Last Name'];
-                        var barcodeNum = participant['fields']['Barcode']['text'];
-                        var listOfEvents = participant['fields']['Events'];
-                        if(listOfEvents === undefined) {
-                            listOfEvents = [];
+                        console.log("Processing barcode for participant", index + 1, "out of", listOfAttendees.length, "...");
+                        try {
+                            var participantId = participant['id'];
+                            var participantName = participant['fields']['First Name'] + ' ' + participant['fields']['Last Name'];
+                            var barcodeNum = participant['fields']['Barcode']['text'];
+                            var listOfEvents = participant['fields']['Events'];
+                            if(listOfEvents === undefined) {
+                                listOfEvents = [];
+                            }
+                        }
+                        catch(error) {
+                            console.log("ERROR:", error);
+                            console.log("Skipping over particpant...");
+                            return;
                         }
                         // Ensures that the name and barcode have the same index in their respective arrays
                         barcodeList.push(barcodeNum);
@@ -253,4 +262,4 @@
     });
 
     var checker = setInterval(sendBarcodeIfValid, 500);
-}());
+//}());

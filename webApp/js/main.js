@@ -1,4 +1,4 @@
-//(function() { //Create a module to make all variables anonymous
+(function() { //Create a module to make all variables anonymous
     // Grab the pertinent elements from the DOM
     var barcodeInput = document.getElementById('barcode-input');
     var eventDropdown = document.getElementById('event-dropdown');
@@ -253,4 +253,4 @@
     });
 
     var checker = setInterval(sendBarcodeIfValid, 500);
-//}());
+}());

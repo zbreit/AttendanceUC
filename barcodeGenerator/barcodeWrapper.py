@@ -1,6 +1,5 @@
 import barcode  # For generating barcodes given a string of numbers
-from barcode.writer import ImageWriter  # For saving files as pngss
-import random   # For generating random sequences for barcodes
+from barcode.writer import ImageWriter  # For saving files as pngs
 import json     # For reading the config file
 
 # Get configuration from config.json

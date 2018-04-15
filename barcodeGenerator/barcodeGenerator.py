@@ -1,23 +1,25 @@
-import random          # For adding random digits to the bar code
-import barcodeWrapper  # For creating barcode's based on registration info
-import airtableWrapper  # For getting and posting info to AirTable
+import airtablewrapper  # For getting and posting info to AirTable
+import barcodewrapper  # For creating barcode's based on registration info
 
-listOfParticipants = airtableWrapper.getParticipants()
-barcodeDir = "./barcodes/"
+
+PARTICIPANTS = airtablewrapper.get_participants()
+BARCODE_DIR = "./barcodes/"
 
 # Setting up the PyBarcode module
-barcodeOptions = {'font_size': 10, 'text': 'Testing', 'module_width': 0.75, 'module_height': 10}
-
+BARCODE_OPTIONS = {'font_size': 10, 'text': 'Testing',
+                   'module_width': 0.75, 'module_height': 10}
 
 # Iterate through each participant and generate a barcode
-for participant in listOfParticipants:
+for participant in PARTICIPANTS:
     try:
         # If the participant already has a generated barcode, don't create a new one
-        barcodeWrapper.barcodeList.append(participant['fields']['Barcode']['text'])
+        barcodewrapper.barcodeList.append(
+            participant['fields']['Barcode']['text'])
         print("Participant already has the generated barcode")
 
     except KeyError:
-        barcode = barcodeWrapper.createBarcode(participant)
-        participantName = airtableWrapper.getFullName(participant)
-        barcodeImg = barcode.save(barcodeDir + participantName, barcodeOptions)
-        airtableWrapper.addParticipantBarcode(participant, barcode)
+        barcode = barcodewrapper.createBarcode(participant)
+        participantName = airtablewrapper.get_full_name(participant)
+        barcodeImg = barcode.save(
+            BARCODE_DIR + participantName, BARCODE_OPTIONS)
+        airtablewrapper.add_participant_barcode(participant, barcode)

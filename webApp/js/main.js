@@ -12,6 +12,7 @@
     var attendanceURL = baseURL + 'List%20of%20Atendees' + apiKeyParam;
     var attendEventURL = baseURL + 'List%20of%20Atendees/';
     var hackUCEventId = 'recqLzFdQq6MTdsTk';
+    
     // The airtable API Key
     var airtableKey;
     var eventJSON;
@@ -64,7 +65,7 @@
                         }
                         catch(error) {
                             console.log("ERROR:", error);
-                            console.log("Skipping over particpant...");
+
                             return;
                         }
                         // Ensures that the name and barcode have the same index in their respective arrays
@@ -82,7 +83,7 @@
     function getApiKey() {
         var xhr = new XMLHttpRequest();
 
-        xhr.open('GET', 'http://212.237.22.247/config.json', true);
+        xhr.open('GET', 'INSERT URL HERE', true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 file_data = JSON.parse(xhr.responseText);

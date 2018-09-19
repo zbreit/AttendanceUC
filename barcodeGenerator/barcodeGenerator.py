@@ -1,16 +1,8 @@
 import airtablewrapper  # For getting and posting info to AirTable
-import barcodewrapper  # For creating barcode's based on registration info
-
-
-PARTICIPANTS = airtablewrapper.get_participants()
-BARCODE_DIR = "./barcodes/"
-
-# Setting up the PyBarcode module
-BARCODE_OPTIONS = {'font_size': 10, 'text': 'Testing',
-                   'module_width': 0.75, 'module_height': 10}
+import barcodewrapper   # For creating barcode's based on registration info
 
 # Iterate through each participant and generate a barcode
-for participant in PARTICIPANTS:
+for participant in airtablewrapper.get_participants():
     try:
         # If the participant already has a generated barcode, don't create a new one
         barcodewrapper.barcodeList.append(

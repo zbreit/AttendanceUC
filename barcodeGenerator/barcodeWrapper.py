@@ -3,8 +3,8 @@ from barcode.writer import ImageWriter  # For saving files as pngs
 import json     # For reading the config file
 
 # Get configuration from config.json
-configFile = open('config.json')
-userConfigs = json.load(configFile)
+roleIDFile = open('roleIDs.json')
+roleIDs = json.load(roleIDFile)['roles']
 
 # Barcode iterator keeps track of the current barcode ID
 barcodeIterator = 10000
@@ -12,12 +12,15 @@ barcodeIterator = 10000
 # A list of all used barcodes to prevent repeats
 barcodeList = []
 
+# A Barcode class to generate EAN8-style barcodes
+EAN8Generator = barcode.get_barcode_class('ean8')
+
 
 def createBarcode(participant):
     """Given a dictionary of participant info, generate a barcode using PyBarcode"""
     barcodeNum = getBarcodeNumber(participant)
     barcodeList.append(barcodeNum)
-    return barcode.get('code128', barcodeNum, writer=ImageWriter())
+    return EAN8Generator(barcodeNum)
 
 
 def getBarcodeNumber(participant):
@@ -38,7 +41,7 @@ def getBarcodeNumber(participant):
 def getBarcodePrefix(role):
     """Given a participant's role, return their role's prefix"""
     try:
-        return userConfigs['roles'][role]
+        return roleIDs[role]
     except KeyError:
         # If there is no valid role, assign an id of 404
         print('Unknown role of "' + role + '"')

@@ -20,6 +20,4 @@ for participant in PARTICIPANTS:
     except KeyError:
         barcode = barcodewrapper.createBarcode(participant)
         participantName = airtablewrapper.get_full_name(participant)
-        barcodeImg = barcode.save(
-            BARCODE_DIR + participantName, BARCODE_OPTIONS)
         airtablewrapper.add_participant_barcode(participant, barcode)

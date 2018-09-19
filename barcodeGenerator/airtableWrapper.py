@@ -8,12 +8,10 @@ module to be installed. The following functions are defined:
 - `get_participants()` --> Returns a list of particpants from the airtable
 - `send_request()`     --> A helper function to interface with `requests`
 - `get_full_name(participant)` --> Returns the full name of a participant
-
-
-
 """
 
 import requests  # For interfacing with the registration info on AirTable
+import json
 
 # Stores a global list of participants
 attendeesList = []
@@ -31,20 +29,14 @@ class API(object):
 
 
 # AirTable request variables
-AIRTABLE_KEY = 'INSERT KEY HERE'
-AIRTABLE_URL = 'INSERT URL HERE'
+airtableConfigFile = open('airtableSecret.json')
+airtableConfigs = json.load(airtableConfigFile)
+AIRTABLE_KEY = airtableConfigs['API_KEY']
+AIRTABLE_URL = airtableConfigs['URL']
 airtableParams = {
     'View': "Main View",
     'api_key': AIRTABLE_KEY
 }
-
-# Filestack request variables
-FILESTACK_URL = 'https://www.filestackapi.com/api/store/S3'
-FILESTACK_KEY = 'INSERT KEY HERE'
-FILESTACK_PARAMS = {
-    'key': FILESTACK_KEY
-}
-
 
 def get_participants():
     """Grabs a list of participants from airtable. Exits the program on error"""
@@ -60,6 +52,7 @@ def get_participants():
 
 
 def send_request(requestMethod, url, **kwargs):
+    """Issues API requests with more verbose output"""
     try:
         print('Performing the ' + requestMethod + ' request...')
         req = requests.request(requestMethod, url, **kwargs)
@@ -84,33 +77,17 @@ def get_full_name(participant):
         ' ' + participant['fields']['Last Name'].strip()
 
 
-def filestack_upload(fileName):
-    """Upload the image file to filestack and return its URL"""
-    barcodeFile = {
-        'fileUpload': open('./barcodes/' + fileName, 'rb')
-    }
-    filestackReq = send_request(
-        'post', FILESTACK_URL, params=FILESTACK_PARAMS, files=barcodeFile)
-    return filestackReq.json()
-
-
 def add_participant_barcode(participant, barcode):
     """Update participant in airtable with their barcode and their barcode image"""
     patchURL = AIRTABLE_URL + "/" + participant['id']
-    fileName = get_full_name(participant) + '.png'
-    fileURL = filestack_upload(fileName)['url']
+
     barcodeObj = {
-        'text': barcode.get_fullcode(),
+        'text': barcode.ean,
         'type': 'ean8'
     }
-    barcode_img_file = [{
-        'url': fileURL,
-        'filename': fileName
-    }]
     participantData = {
         'fields': {
-            'Barcode': barcodeObj,
-            'Barcode Image': barcode_img_file
+            'Barcode': barcodeObj
         }
     }
     print("Updating data for %s..." % (get_full_name(participant)))

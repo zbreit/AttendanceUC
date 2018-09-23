@@ -6,12 +6,12 @@
     var hackpointsPopup = document.getElementById('hackpoints-notification');
     var pointValText = document.getElementById('point-value');
     // The Airtable Basic information
-    var baseURL = 'https://api.airtable.com/v0/appzBX90ZCoEcaxry/';
+    var baseURL = 'INSERT YOUR URL HERE';
     var apiKeyParam = '?api_key='
     var eventURL = baseURL + 'Events' + apiKeyParam;
     var attendanceURL = baseURL + 'List%20of%20Atendees' + apiKeyParam;
     var attendEventURL = baseURL + 'List%20of%20Atendees/';
-    var hackUCEventId = 'recqLzFdQq6MTdsTk';
+    var hackUCEventId = 'INSERT HACKUC EVENT ID FROM AIRTABLE';
     
     // The airtable API Key
     var airtableKey;
@@ -81,17 +81,19 @@
     }
 
     function getApiKey() {
-        var xhr = new XMLHttpRequest();
+        airtableKey = 'YOUR API KEY HERE';
+        document.dispatchEvent(gatheredApiKey);
+        // var xhr = new XMLHttpRequest();
 
-        xhr.open('GET', 'INSERT URL HERE', true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                file_data = JSON.parse(xhr.responseText);
-                airtableKey = file_data['api_key'];
-                document.dispatchEvent(gatheredApiKey);
-            }
-        };
-        xhr.send();
+        // xhr.open('GET', 'INSERT URL HERE', true);
+        // xhr.onreadystatechange = function() {
+        //     if (xhr.readyState === 4 && xhr.status === 200) {
+        //         file_data = JSON.parse(xhr.responseText);
+        //         airtableKey = file_data['api_key'];
+        //         document.dispatchEvent(gatheredApiKey);
+        //     }
+        // };
+        // xhr.send();
     }
 
     function focusBarcodeInput() {
@@ -194,7 +196,7 @@
         notificationBar.classList.add('active');
         window.setTimeout(function() {
             notificationBar.classList.remove('active');
-        }, 3500);
+        }, 2000);
     }
 
     function displayPointValue(eventId) {
@@ -209,7 +211,7 @@
         hackpointsPopup.classList.add('active');
         window.setTimeout(function() {
             hackpointsPopup.classList.remove('active');
-        }, 3500);
+        }, 2000);
     }
 
     function getPointValue(eventId) {
@@ -262,5 +264,5 @@
         getApiKey();
     });
 
-    var checker = setInterval(sendBarcodeIfValid, 500);
+    var checker = setInterval(sendBarcodeIfValid, 200);
 //}());

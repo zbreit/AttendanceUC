@@ -1,7 +1,7 @@
-import airtableWrapper
+import airtablewrapper
 import json
 
-participantList = airtableWrapper.get_participants()
+participantList = airtablewrapper.get_participants()
 participantJSONArray = []
 
 for participant in participantList:

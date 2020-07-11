@@ -1,34 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>AttendanceUC</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto|Titillium+Web:300,400,700" rel="stylesheet">
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto|Titillium+Web:300,400,700"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
     <link rel="stylesheet" href="css/main.css" type="text/css" />
-
-</head>
-<body>
-    <img alt="Background Image" src="img/blue.png" class="background-image">
+  </head>
+  <body>
+    <img
+      alt="Background Image"
+      src="img/background.png"
+      class="background-image"
+    />
     <div class="dropdown-container">
-        <select id="event-dropdown">
-            <!-- Autofilled by javascript -->
-        </select>
+      <select id="event-dropdown">
+        <!-- Autofilled by javascript -->
+      </select>
     </div>
+
     <section class="hero">
-        <img src="img/logo.png" alt="HackUC Logo" class="logo">
-        <h1 class="title">Attendance<b>UC</b></h1>
-        <p id="input-status">Enter your barcode below to sign in</p>
-        <input id="barcode-input" type="text" maxlength="7">
+      <img src="img/logo.png" alt="HackUC Logo" class="logo" />
+      <h1 class="title">Attendance<strong>UC</strong></h1>
+      <p id="input-status">Enter your barcode below to sign in</p>
 
-        <div id="hackpoints-notification" onclick="">
-            <span id="point-value"></span>
-            <img class="hackpoints-logo" src="img/hackpoints.png" alt="">
-        </div>
+      <!-- Autofilled by javascript -->
+      <input id="barcode-input" type="text" maxlength="8" />
 
+      <!-- Autofilled by javascript -->
+      <div id="hackpoints-notification">
+        <span id="point-value"></span>
+        <img class="hackpoints-logo" src="img/hackpoints.png" alt="" />
+      </div>
     </section>
-    <p id="notification"></p>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+
+    <p id="notification"><!-- Autofilled by javascript --></p>
+
+    <!--Scripts-->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+      crossorigin="anonymous"
+    ></script>
     <script type="text/javascript" src="js/main.js"></script>
-</body>
+  </body>
 </html>
